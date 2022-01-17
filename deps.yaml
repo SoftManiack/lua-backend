@@ -1,0 +1,10 @@
+---
+tarantool:
+- pg
+- http
+- metrics
+gtn:
+- data-mapper
+- gtn-openapi
+- pgmoon
+- pg

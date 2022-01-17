@@ -1,0 +1,11 @@
+before_script:
+  - eval `ssh-agent -s` && ssh-add && ssh-add -L
+stages:
+  - test
+test:
+  stage: test
+  only:
+    refs:
+      - master
+  script:
+    - ssh $CI_PROJECT_NAME@test.gtn.ee 'bash -s' < ./.ci/run-test.sh git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git

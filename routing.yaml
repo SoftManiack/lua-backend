@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "Tarantool http-v2 project"
+servers:
+  - url: http://172.16.55.172:8080/
+    description: 'test'
+  - url: http://172.16.55.172:8080/
+    description: 'development'
+    variables:
+      port:
+        default: '8080'
+  - url: 'staging'
+    description: 'staging'
+    variables:
+      socket:
+        default: 'template_project.dev.sock'
+      socketPath:
+        default: 'tmp'
+  - url: 'prod'
+    description: 'production'
+    variables:
+      socket:
+        default: 'template_project.sock' #TODO change this before release
+      socketPath:
+        default: 'tmp'
+paths:
+  /profile:
+    get:
+      tags:
+        - profile
+      operationId: 'get_profile'
+      security:
+        - bearerAuth: [ ]
+      summary: "Get information for user"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+  /tariffs:
+    get:
+      tags:
+        - tariff
+      operationId: 'get_tariffs'
+      security:
+        - bearerAuth: [ ]
+      summary: "Get tariffs"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ success, data ]
+  /tariff/update:
+    post:
+      tags:
+        - tariff
+      operationId: 'update_user_tariff'
+      security:
+        - bearerAuth: [ ]
+      summary: "Upadte tariff"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "05612e6f-8f0a-4c5c-9011-69dee27c8ee2"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ success, data ]
+  /operation:
+    get:
+      tags:
+        - operation
+      operationId: 'get_operations'
+      security:
+        - bearerAuth: [ ]
+      summary: "Get operation for balance"
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ success, data ]
+  /operation/pay:
+    post:
+      tags:
+        - operation
+      operationId: 'pay_operation'
+      security:
+        - bearerAuth: [ ]
+      summary: "Pay"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  example: 150.00
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ success, data ]
+  /bearer:
+    get:
+      tags:
+        - main
+      operationId: 'bearer'
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: OK response
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: string
+                    example: 'bearer data'
+  /basic:
+    get:
+      tags:
+        - main
+      operationId: 'basic'
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: OK response
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: string
+                    example: 'basic data'
+  /cookie:
+    get:
+      tags:
+        - main
+      operationId: 'cookie'
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: OK response
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: string
+                    example: 'cookie data'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+
